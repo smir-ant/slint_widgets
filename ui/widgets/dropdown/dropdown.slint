@@ -1,0 +1,80 @@
+import { Palette } from "std-widgets.slint";
+
+export component Dropdown inherits Rectangle {
+    in property <string> title;
+    in property <length> title-font-size: 14px;  // label font size and image width & height
+    in property <bool> header-background: false;  // background-color for header + padding-top for content
+    in-out property <bool> expanded: false;  // false = collapsed, else = expanded
+
+    // --- Animation config ---
+    property <duration> animation-duration: 200ms;
+    property <easing> animation-easing: Easing.ease-in-out;
+    
+    // --- Style ---
+    border-color: Palette.foreground.with-alpha(0.3);
+    border-width: 1px;
+    border-radius: 6px;
+    background: transparent;
+    clip: true; // Clip the content during animation
+    width: main_layout.preferred-width;  // title > content (in width) ? layout.width : content.width
+
+    // --- Layout & Components ---
+    main_layout := VerticalLayout {
+        header := TouchArea {
+            clicked => {
+                root.expanded = !root.expanded;
+            }
+            height: layout.preferred-height;
+
+            Rectangle {
+                background: header-background ? root.border-color.with-alpha(0.1) : transparent;
+                layout := HorizontalLayout {
+                    padding: 8px;
+                    spacing: 8px;
+
+                    // The icon that rotates and indicates state
+                    icon := Image {
+                        source: @image-url("arrow_right.svg");
+                        width: title-font-size;
+                        height: title-font-size;
+                        vertical-alignment: center;
+                        colorize: Palette.foreground.with-alpha(0.6);
+                        rotation-angle: root.expanded ? 90deg : 0deg;
+
+                        animate rotation-angle {
+                            duration: animation-duration;
+                            easing: animation-easing;
+                        }
+                    }
+
+                    // The title text
+                    label := Text {
+                        text: root.title;
+                        color: Palette.foreground.with-alpha(0.8);
+                        font-size: title-font-size;
+                        font-weight: 600;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+
+        // The layout for the children, which will be shown/hidden
+        content := VerticalLayout {
+            padding-top: header-background ? 10px : 0px;
+            padding-right: 10px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            spacing: 5px;
+            @children
+        }
+    }
+
+    // Set the height based on the expanded state
+    height: root.expanded ? main_layout.preferred-height : header.height;
+    // Animate the height property
+    animate height {
+        duration: animation-duration;
+        easing: animation-easing;
+    }
+}

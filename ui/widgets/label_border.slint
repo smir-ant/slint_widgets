@@ -1,0 +1,41 @@
+import { Palette } from "std-widgets.slint";
+
+export component LabelBorder inherits Rectangle {
+    in property <string> title;
+    in property <brush> parent-background: Palette.background;  // The background of the window, to hide the border behind the label.
+    in property <length> label-font-size: 12px;
+
+    width: layout.preferred-width;  // for min possible width
+    border-color: Palette.foreground.with-alpha(0.3);
+    border-width: 1px;
+    border-radius: 6px;
+    background: transparent;
+
+    // The layout for the children.
+    layout := VerticalLayout {
+        padding: 10px;
+        padding-top: 12px; // little bit more space for the label
+        spacing: 5px;
+        @children
+    }
+
+    // The background for the label to hide the border behind it.
+    // This is drawn first, so it's in the back.
+    label_bg := Rectangle {
+        x: label.x - 4px;  // 4px is padding of bg
+        y: -(label.height / 2);
+        width: label.width + 8px;  // 4px(left padding) + 4px(right padding)
+        height: label.height;
+        background: parent-background;
+    }
+
+    // The label text, drawn on top of the background.
+    label := Text {
+        x: 12px;
+        y: -(self.height / 2);
+        text: root.title;
+        color: Palette.foreground.with-alpha(0.6);
+        font-size: label-font-size;
+        font-weight: 600;
+    }
+}

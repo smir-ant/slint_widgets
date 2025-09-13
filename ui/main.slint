@@ -1,0 +1,42 @@
+import { Palette, LineEdit, ScrollView, Button } from "std-widgets.slint";
+import { LabelBorder } from "widgets/label_border.slint";
+import { Dropdown } from "widgets/dropdown/dropdown.slint";
+
+
+export component Main inherits Window {
+    in property <length> window_padding: 20px;  // const for full_width and define main vertical layout padding
+    in property <length> full_width: root.width - (window_padding*2) - 4px;  // size for elems which need to 100% width but padding*2 and scrollbar(4px)
+    
+    min-width: 400px;
+    min-height: 600px;
+    background: Palette.background;
+
+    ScrollView {
+        VerticalLayout {
+            alignment: start;
+            padding: window_padding;
+            spacing: 10px;
+
+            LabelBorder {
+                title: "Label border";  // [required]
+                parent-background: root.background;  // [optional] transfer window background for label bg
+                border-radius: 5px;  // [optional]
+                label-font-size: 14px;  // [optional]
+                // width: full_width;  // if u need full width block with padding in window
+
+                LineEdit { placeholder-text: "There can be many elements here"; } Text { text: "And different types of elems"; } Text { text: "It will be min possible width and height by defalut"; }
+            }
+
+            Dropdown {
+                title: "Click to expand";  // [required]
+                title-font-size: 14px;
+                border-radius: 5px;  // [optional]
+                header-background: false;  // [optional]
+                // expanded: true;  // [optional]
+                // width: root.full_width;  // if u need full width block with padding in window
+
+                LineEdit { placeholder-text: "Some setting"; } Button { text: "A button"; } Text { text: "Last item"; }
+            }
+        }
+    }
+}

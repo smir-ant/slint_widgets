@@ -1,0 +1,12 @@
+[package]
+name = "slint_widgets"
+version = "0.1.0"
+edition = "2024"
+authors = ["Smirnov Anton <abcsmir.ant@yandex.ru>"]  
+
+
+[dependencies]
+slint = "1.13.1"
+
+[build-dependencies]
+slint-build = "1.13.1"
