@@ -1,0 +1,21 @@
+import { Palette } from "std-widgets.slint";
+
+// VerticalLayout cuz "padding only has effect on layout elements"
+export component HR inherits HorizontalLayout {
+    in property <percent> hr-width: 95%;
+    in property <length> hr-height: 1px;
+    in property <brush> hr-background: Palette.foreground.with-alpha(0.3);
+    in property <length> hr-border-radius: 0px;
+    in property <length> vertical-padding: 5px;
+
+    padding-top: vertical-padding;
+    padding-bottom: vertical-padding;
+    alignment: center;
+
+    Rectangle {
+        width: hr-width;
+        height: hr-height;
+        background: hr-background;
+        border-radius: hr-border-radius;
+    } 
+}

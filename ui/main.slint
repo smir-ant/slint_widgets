@@ -1,7 +1,9 @@
 import { Palette, LineEdit, ScrollView, Button } from "std-widgets.slint";
+
 import { LabelBorder } from "widgets/label_border.slint";
 import { Dropdown } from "widgets/dropdown/dropdown.slint";
 import { WheelPicker } from "widgets/wheel_picker.slint";
+import { HR } from "widgets/hr.slint";
 
 
 export component Main inherits Window {
@@ -39,6 +41,16 @@ export component Main inherits Window {
                 // width: root.full_width;  // if u need full width block with padding in window
 
                 LineEdit { placeholder-text: "Some setting"; } Button { text: "A button"; } Text { text: "Last item"; }
+            }
+
+
+            // ------------- HR -------------
+            HR {
+                hr-width: 50%;
+                hr-height: 5px;
+                hr-background: #22aa5544;
+                hr-border-radius: 5px;
+                vertical-padding: 10px;
             }
 
 
