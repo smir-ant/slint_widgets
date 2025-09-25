@@ -1,0 +1,158 @@
+import { Palette } from "std-widgets.slint";
+
+export component WheelPicker inherits Rectangle {
+    in property <[string]> model: [];
+    // You can now control this from main.slint. MUST BE an odd number.
+    in property <int> repetitions: 9;
+    in-out property <int> current-index: 0;
+    in property <bool> reverse-scroll: false;
+    callback selected(int);
+
+    // --- Logic now uses `repetitions` instead of a hardcoded '3' ---
+    private property <int> source-model-length: model.length;
+    private property <int> middle-block-index: Math.floor(repetitions / 2);
+    private property <int> total-length: source-model-length * repetitions;
+    // Start in the middle block
+    private property <int> selected-index: current-index + (middle-block-index * source-model-length);
+
+    private property <length> item-height: 30px;
+    private property <length> drag-start-y: 0px;
+    private property <length> container-start-y: 0px;
+    private property <bool> dragging: false;
+    private property <length> manual-container-y: 0px;
+    private property <bool> scroll-is-cooling-down: false;
+    // scroll is too much events, 1 in 100ms is enough
+    cooldown-timer := Timer { interval: 100ms; triggered => { root.scroll-is-cooling-down = false; } }
+
+    clip: true;
+    in property <brush> background-color: Palette.alternate-background;  // The background of the window, to hide the border behind the label.
+    background: background-color;
+    border-radius: 5px;
+
+    Rectangle {
+        y: (root.height - root.item-height) / 2;
+        height: root.item-height;
+        width: 100%;
+        background: Palette.accent-background;
+        border-radius: 3px;
+    }
+
+    items-container := VerticalLayout {
+        y: root.dragging ? root.manual-container-y : ((root.height - root.item-height) / 2 - (root.selected-index * root.item-height));
+        animate y { duration: 200ms; easing: ease-out; }
+
+        public pure function txt-is-selected(indx:int, n: int) -> bool {
+            return root.selected-index == (indx + (source-model-length * n));
+        }
+
+        // IMPORTANT: The number of these 'for' loops must match the `repetitions` property.
+        // To add more, copy a block and increment the multiplier (e.g., `* 3`, `* 4`).
+        // yeap, we can use `for`` only for create elements, not `repeat n times` 
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 0) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 0) ? 700 : 400;
+            opacity: txt-is-selected(indx, 0) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 1) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 1) ? 700 : 400;
+            opacity: txt-is-selected(indx, 1) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 2) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 2) ? 700 : 400;
+            opacity: txt-is-selected(indx, 2) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 3) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 3) ? 700 : 400;
+            opacity: txt-is-selected(indx, 3) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 4) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 4) ? 700 : 400;
+            opacity: txt-is-selected(indx, 4) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 5) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 5) ? 700 : 400;
+            opacity: txt-is-selected(indx, 5) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 6) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 6) ? 700 : 400;
+            opacity: txt-is-selected(indx, 6) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 7) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 7) ? 700 : 400;
+            opacity: txt-is-selected(indx, 7) ? 1.0 : 0.7;
+        }
+        for model-data[indx] in root.model: Text {
+            text: model-data; height: root.item-height; width: root.width; horizontal-alignment: center; vertical-alignment: center;
+            font-size: txt-is-selected(indx, 8) ? 15px : 12px;
+            font-weight: txt-is-selected(indx, 8) ? 700 : 400;
+            opacity: txt-is-selected(indx, 8) ? 1.0 : 0.7;
+        }
+        
+    }
+
+    touch := TouchArea {
+        pointer-event(event) => {
+            if (event.kind == PointerEventKind.down) {
+                root.dragging = true;
+                root.drag-start-y = self.mouse-y;
+                root.container-start-y = items-container.y;
+                root.manual-container-y = root.container-start-y;
+                return EventResult.accept;
+            } else if (event.kind == PointerEventKind.move && root.dragging) {
+                let dy = self.mouse-y - root.drag-start-y;
+                root.manual-container-y = root.container-start-y + dy;
+                return EventResult.accept;
+            } else if (event.kind == PointerEventKind.up) {
+                if (root.dragging) {
+                    root.dragging = false;
+                    let center-offset = (root.height - root.item-height) / 2;
+                    let displacement = root.manual-container-y - center-offset;
+                    let item-offset = -displacement / root.item-height;
+                    let new-index = round(item-offset).clamp(0, total-length - 1);
+
+                    if (root.selected-index != new-index) {
+                        root.selected-index = new-index;
+                        root.current-index = Math.mod(new-index, source-model-length);
+                        root.selected(root.current-index);
+                    }
+                    return EventResult.accept;
+                }
+            }
+            return EventResult.reject;
+        }
+
+        scroll-event(event) => {
+            if (root.scroll-is-cooling-down) { return EventResult.reject; }
+            let direction = root.reverse-scroll ? -1 : 1;
+            let change = (event.delta_y > 0.5px) ? 1 : (event.delta_y < -0.5px) ? -1 : 0;
+
+            if (change != 0) {
+                let new-index = (root.selected-index + (change * direction)).clamp(0, total-length - 1);
+                if (root.selected-index != new-index) {
+                    root.selected-index = new-index;
+                    root.current-index = Math.mod(new-index, source-model-length);
+                    root.selected(root.current-index);
+                }
+                root.scroll-is-cooling-down = true;
+                cooldown-timer.restart();
+                return EventResult.accept;
+            }
+            return EventResult.reject;
+        }
+    }
+}

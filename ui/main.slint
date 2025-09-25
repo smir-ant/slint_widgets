@@ -1,6 +1,7 @@
 import { Palette, LineEdit, ScrollView, Button } from "std-widgets.slint";
 import { LabelBorder } from "widgets/label_border.slint";
 import { Dropdown } from "widgets/dropdown/dropdown.slint";
+import { WheelPicker } from "widgets/wheel_picker.slint";
 
 
 export component Main inherits Window {
@@ -17,6 +18,7 @@ export component Main inherits Window {
             padding: window_padding;
             spacing: 10px;
 
+            // ------------- LabelBorder -------------
             LabelBorder {
                 title: "Label border";  // [required]
                 parent-background: root.background;  // [optional] transfer window background for label bg
@@ -27,6 +29,7 @@ export component Main inherits Window {
                 LineEdit { placeholder-text: "There can be many elements here"; } Text { text: "And different types of elems"; } Text { text: "It will be min possible width and height by defalut"; }
             }
 
+            // ------------- Dropdown -------------
             Dropdown {
                 title: "Click to expand";  // [required]
                 title-font-size: 14px;
@@ -36,6 +39,52 @@ export component Main inherits Window {
                 // width: root.full_width;  // if u need full width block with padding in window
 
                 LineEdit { placeholder-text: "Some setting"; } Button { text: "A button"; } Text { text: "Last item"; }
+            }
+
+
+            // ------------- WheelPicker -------------
+            property <int> selected-hour: 0;
+            property <int> selected-minute: 0;
+            property <int> selected-second: 0;
+
+            property <[string]> hours-model: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23",];
+            property <[string]> minutes-model: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",];
+            property <[string]> seconds-model: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",];
+
+            VerticalLayout {
+                HorizontalLayout {
+                    alignment: center;
+                    spacing: 10px;
+
+                    WheelPicker {
+                        width: 100px;
+                        height: 150px;
+                        model: hours-model;
+                        reverse-scroll: true;
+                        selected(index) => { selected-hour = index; }
+                    }
+                    WheelPicker {
+                        width: 100px;
+                        height: 150px;
+                        model: minutes-model;
+                        reverse-scroll: true;
+                        selected(index) => { selected-minute = index; }
+                    }
+                    WheelPicker {
+                        width: 100px;
+                        height: 150px;
+                        model: seconds-model;
+                        reverse-scroll: true;
+                        selected(index) => { selected-second = index; }
+                    }
+                }
+
+                Button {
+                    text: "Show time";
+                    clicked => {
+                        debug("\{selected-hour} : \{selected-minute} : \{selected-second}");
+                    }
+                }
             }
         }
     }
