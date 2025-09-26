@@ -2,13 +2,14 @@ import { Palette } from "std-widgets.slint";
 
 export component WheelPicker inherits Rectangle {
     in property <[string]> model: [];
-    // You can now control this from main.slint. MUST BE an odd number.
-    in property <int> repetitions: 9;
     in-out property <int> current-index: 0;
-    in property <bool> reverse-scroll: false;
+    in property <bool> reverse-scroll: true;
+    in property <int> sections: 5;
+    in property <brush> accent-color: Palette.accent-background;
     callback selected(int);
+    // You can control this. MUST BE an odd number.
+    property <int> repetitions: 9;
 
-    // --- Logic now uses `repetitions` instead of a hardcoded '3' ---
     private property <int> source-model-length: model.length;
     private property <int> middle-block-index: Math.floor(repetitions / 2);
     private property <int> total-length: source-model-length * repetitions;
@@ -24,16 +25,18 @@ export component WheelPicker inherits Rectangle {
     // scroll is too much events, 1 in 100ms is enough
     cooldown-timer := Timer { interval: 100ms; triggered => { root.scroll-is-cooling-down = false; } }
 
+    height: sections * item-height;  
+    width: 100px;  
     clip: true;
-    in property <brush> background-color: Palette.alternate-background;  // The background of the window, to hide the border behind the label.
-    background: background-color;
+    background: Palette.alternate-background;
     border-radius: 5px;
+    
 
     Rectangle {
         y: (root.height - root.item-height) / 2;
         height: root.item-height;
         width: 100%;
-        background: Palette.accent-background;
+        background: accent-color;
         border-radius: 3px;
     }
 
