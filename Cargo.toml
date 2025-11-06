@@ -8,7 +8,11 @@ authors = ["Smirnov Anton <abcsmir.ant@yandex.ru>"]
 
 
 [dependencies]
-slint = "1.14.1"
+slint = { version = "1.14.1", default-features = false, features = [
+    "renderer-femtovg",     # render-software will have troubles wil clip and rotate for dropdown widget 
+    "backend-winit",        # Engine for window and mouse handling
+    "compat-1-2",           # Compatibility
+]}
 
 [build-dependencies]
 slint-build = "1.14.1"

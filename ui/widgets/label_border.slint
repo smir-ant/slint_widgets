@@ -21,7 +21,7 @@ export component LabelBorder inherits Rectangle {
 
     // The background for the label to hide the border behind it.
     // This is drawn first, so it's in the back.
-    label_bg := Rectangle {
+    if root.title != "": label_bg := Rectangle {
         x: label.x - 4px;  // 4px is padding of bg
         y: -(label.height / 2);
         width: label.width + 8px;  // 4px(left padding) + 4px(right padding)
