@@ -4,12 +4,14 @@ import { LabelBorder } from "widgets/label_border.slint";
 import { Dropdown } from "widgets/dropdown/dropdown.slint";
 import { WheelPicker } from "widgets/wheel_picker.slint";
 import { HR } from "widgets/hr.slint";
+import { SidePanel } from "widgets/side_panel.slint";
+
 
 export component Main inherits Window {
     in property <length> window_padding: 20px;  // const for full_width and define main vertical layout padding
     in property <length> full_width: root.width - (window_padding*2) - 4px;  // size for elems which need to 100% width but padding*2 and scrollbar(4px)
     
-    min-width: 800px;
+    // min-width: 800px;
     min-height: 600px;
     background: Palette.background;
     
@@ -232,6 +234,47 @@ export component Main inherits Window {
                 }
                 }
             }
+        }
+
+
+        Tab {
+            title: "SidePanel";
+            VerticalLayout {
+                padding: 20px;
+                spacing: 40px;
+                alignment: start;
+
+                Button {
+                    text: "SidePanel #1";
+                    clicked => {
+                        sidePanel1.shown = !sidePanel1.shown;
+                    }
+                }
+
+                Button {
+                    text: "SidePanel #2";
+                    clicked => {
+                        sidePanel2.shown = !sidePanel2.shown;
+                    }
+                }
+
+            }
+        }
+    }
+    // not in tabs widget, cuz need to window level, popup over all layers
+    sidePanel1 := SidePanel {
+        Text { text: "SidePanel #1"; }
+    }
+    sidePanel2 := SidePanel {
+        position_right: true;
+        panel_width: 300px;
+        panel_border_radius: 15px;
+        panel_padding: 25px;
+        panel_spacing: 25px;
+
+        Text { text: "SidePanel #2"; }
+        Button { text: "Inside Button"; 
+            clicked => {sidePanel2.shown = false;}
         }
     }
 }
