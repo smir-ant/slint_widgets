@@ -39,9 +39,9 @@ export component Dropdown inherits Rectangle {
                         height: title-font-size;
                         vertical-alignment: center;
                         colorize: Palette.foreground.with-alpha(0.6);
-                        rotation-angle: root.expanded ? 90deg : 0deg;
+                        transform-rotation: root.expanded ? 90deg : 0deg;
 
-                        animate rotation-angle {
+                        animate transform-rotation {
                             duration: animation-duration;
                             easing: animation-easing;
                         }
