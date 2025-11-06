@@ -6,6 +6,8 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Smirnov Anton <abcsmir.ant@yandex.ru>"]  
 
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
 slint = { version = "1.14.1", default-features = false, features = [
@@ -13,6 +15,14 @@ slint = { version = "1.14.1", default-features = false, features = [
     "backend-winit",        # Engine for window and mouse handling
     "compat-1-2",           # Compatibility
 ]}
+
+# /============== WASM ==============
+[target.'cfg(target_family = "wasm")'.dependencies]
+wasm-bindgen = { version = "0.2" } # Facilitates high-level interactions between WASM and JavaScript.
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-Oz", "--enable-bulk-memory", "--enable-nontrapping-float-to-int"]
+# \_____________________________________
 
 [build-dependencies]
 slint-build = "1.14.1"
