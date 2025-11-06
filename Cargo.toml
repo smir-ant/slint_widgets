@@ -1,3 +1,5 @@
+cargo-features = ["profile-rustflags", "trim-paths"]  # Special compiler features for customizing build
+
 [package]
 name = "slint_widgets"
 version = "0.1.0"
@@ -6,7 +8,21 @@ authors = ["Smirnov Anton <abcsmir.ant@yandex.ru>"]
 
 
 [dependencies]
-slint = "1.13.1"
+slint = "1.14.1"
 
 [build-dependencies]
-slint-build = "1.13.1"
+slint-build = "1.14.1"
+
+
+# -------------------------
+[profile.dev]
+incremental = true              # Enable incremental compilation (only changed parts)
+rustflags = ["-Zthreads=8"]     # Compiler flags: use 8 threads for compilation
+
+[profile.release]
+codegen-units = 1   # How many program parts to compile simultaneously (less = less memory, more = faster)
+lto = true          # True: compiler sees entire program during final linking, allows more global optimizations
+opt-level = "z"     # Optimization level, z - minimum file size
+panic = "abort"     # Error behavior: "abort" - immediately stop the program
+strip = true        # Remove debug information from the executable
+trim-paths = "all"  # Remove excess paths from debug info
